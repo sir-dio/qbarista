@@ -71,10 +71,24 @@ class Question:
         return [answer for answer in self.correct + self.incorrect if answer]
 
     def __str__(self):
-        repr = '%s\n' % self.question
+        repr = '[%s] %s\n' % (self.quiz_id, self.question)
         for answer in random.sample(self.answers, len(self.answers)):
             repr += '\t* %s\n' % answer
         return repr
 
     def __repr__(self):
-        return '%s\n' % self.question
+        return '[%s]: %s\n' % (self.quiz_id, self.question)
+
+    @classmethod
+    def create_from_tuple(cls, tuple):
+        """ Creates a Question instance from a database entry. """
+
+        out = Question()
+
+        out.question = tuple[1]
+        out.correct = [tuple[i] for i in range(2, 6)]
+        out.incorrect = [tuple[i] for i in range(6, 13)]
+        out.picture = tuple[13]
+        out.quiz_id = tuple[14]
+
+        return out
