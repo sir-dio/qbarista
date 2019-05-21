@@ -17,6 +17,11 @@ class qBaristaRequestHandler(socketserver.BaseRequestHandler):
         """ Handle the request from the client. """
 
         data = self.request.recv(1024)
-        self.request.send(data)
+        msg = data.decode()
+
+        if msg == 'Hello':
+            self.request.send(b'Hello to you to!')
+        else:
+            self.request.send(b'whut')
 
         return

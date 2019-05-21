@@ -8,7 +8,7 @@ e-mail: dubrovin.io@icloud.com
 
 """
 
-from request_handler import qBaristaRequestHandler
+from network.request_handler import qBaristaRequestHandler
 
 import socketserver
 
