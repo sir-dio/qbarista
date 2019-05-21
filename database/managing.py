@@ -7,13 +7,15 @@ e-mail: dubrovin.io@icloud.com
 
 """
 
+from database.models import Question
+
 import sqlite3
 
 
 def initialize():
     """ Initialize the database if needed. """
 
-    connection = sqlite3.connect('alex.db')
+    connection = sqlite3.connect('database/alex.db')
 
     with connection:
         cursor = connection.cursor()
@@ -41,8 +43,7 @@ def initialize():
                             id INTEGER PRIMARY KEY AUTOINCREMENT,
                             student TEXT NOT NULL,
                             score INTEGER NOT NULL,
-                            quiz_id TEXT NOT NULL,
-                            FOREIGN KEY (quiz_id) REFERENCES quizzes(quiz_id)
+                            quiz TEXT NOT NULL
                             );""")
 
 
@@ -61,7 +62,7 @@ def drop_all(force=False):
             print('Aborting.')
             return
 
-    connection = sqlite3.connect('alex.db')
+    connection = sqlite3.connect('database/alex.db')
 
     with connection:
         cursor = connection.cursor()
@@ -96,3 +97,17 @@ def add_question(question):
     with connection:
         cursor = connection.cursor()
         cursor.execute(query, values)
+
+
+def get_questions_by_quiz_id(quiz_id):
+    """ Returns a list of questions for a given quiz id. """
+
+    connection = sqlite3.connect('database/alex.db')
+
+    with connection:
+        cursor = connection.cursor()
+
+        q = cursor.execute('SELECT * FROM questions WHERE quiz_id=?', [quiz_id])
+        questions = q.fetchall()
+
+    return [Question.create_from_db_entry(q) for q in questions]

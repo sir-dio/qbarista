@@ -68,27 +68,28 @@ class Question:
 
     @property
     def answers(self):
-        return [answer for answer in self.correct + self.incorrect if answer]
+        answ = [answer for answer in self.correct + self.incorrect if answer]
+        random.shuffle(answ)
+        return answ
 
     def __str__(self):
-        repr = '[%s] %s\n' % (self.quiz_id, self.question)
-        for answer in random.sample(self.answers, len(self.answers)):
-            repr += '\t* %s\n' % answer
+        repr = '[%s] %s\n\t* ' % (self.quiz_id, self.question)
+        repr += '\n\t* '.join(self.answers)
         return repr
 
     def __repr__(self):
         return '[%s]: %s\n' % (self.quiz_id, self.question)
 
     @classmethod
-    def create_from_tuple(cls, tuple):
+    def create_from_db_entry(cls, entry):
         """ Creates a Question instance from a database entry. """
 
         out = Question()
 
-        out.question = tuple[1]
-        out.correct = [tuple[i] for i in range(2, 6)]
-        out.incorrect = [tuple[i] for i in range(6, 13)]
-        out.picture = tuple[13]
-        out.quiz_id = tuple[14]
+        out.question = entry[1]
+        out.correct = [entry[i] for i in range(2, 6)]
+        out.incorrect = [entry[i] for i in range(6, 13)]
+        out.picture = entry[13]
+        out.quiz_id = entry[14]
 
         return out
