@@ -12,7 +12,8 @@ from network.request_handler import qBaristaRequestHandler
 
 import socketserver
 
-if __name__ == '__main__':
+
+def run():
     address = ('0.0.0.0', 9118)
     server = socketserver.TCPServer(address, qBaristaRequestHandler)
     server.serve_forever()

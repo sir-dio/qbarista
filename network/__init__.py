@@ -1,1 +1,1 @@
-from network.client import send
+from network.client import send, test_connection

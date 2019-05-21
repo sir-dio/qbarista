@@ -14,8 +14,8 @@ import socket
 def send(msg):
     """ Sends the message to the RPi server. """
 
-    # ip, port = '192.168.2.69', 9118
-    ip, port = '127.0.0.1', 9118
+    ip, port = '192.168.2.69', 9118
+    # ip, port = '127.0.0.1', 9118
 
     # Connect to the server
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -26,8 +26,19 @@ def send(msg):
 
     # receive the response
     response = s.recv(24)
+
     return response
 
-# # Receive a response
-# response = s.recv(len_sent)
-# print('Received: {!r}'.format(response))
+
+def test_connection():
+    """ Test if the Pi is connected. """
+
+    ip, port = '192.168.2.69', 9118
+
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+    try:
+        s.connect((ip, port))
+        return True
+    except ConnectionRefusedError:
+        return False
