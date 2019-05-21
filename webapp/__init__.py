@@ -1,4 +1,4 @@
-""" qBarista: tasty web-served seismic tests.
+""" qBarista: tasty web-served seismic quizzes.
 
 This file initializes the web application.
 

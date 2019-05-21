@@ -9,7 +9,15 @@ e-mail: dubrovin.io@icloud.com
 
 from webapp import app
 
+from flask import render_template
+
 
 @app.route('/')
+@app.route('/home')
 def home():
-    return '<h1>Welcome home</h2>'
+    return render_template('home.html', title='Welcome to Alex!')
+
+
+@app.route('/test')
+def test():
+    return render_template('test.html')
