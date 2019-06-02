@@ -8,6 +8,9 @@ e-mail: dubrovin.io@icloud.com
 """
 
 import socketserver
+import subprocess
+
+from wireless import Wireless
 
 
 class qBaristaRequestHandler(socketserver.BaseRequestHandler):
@@ -19,9 +22,22 @@ class qBaristaRequestHandler(socketserver.BaseRequestHandler):
         data = self.request.recv(1024)
         msg = data.decode()
 
-        if msg == 'Hello':
+        if msg == 'Hello!':
+            # greet back
             self.request.send(b'Hello to you to!')
+        elif msg == 'Shutdown!':
+            # halt the RPi
+            self.request.send(b'Shutting down...')
+            subprocess.run(['sudo', 'shutdown', '-h', 'now'])
+        elif msg[:8] == 'Connect:':
+            # connect to a Wifi Network
+            _, ssid, password = msg.split()
+            w = Wireless()
+            if w.connect(ssid, password):
+                self.request.send(b'Connected to WiFi!')
+            else:
+                self.request.send(b'Connection attempt failed.')
         else:
-            self.request.send(b'whut')
+            self.request.send(b'Unrecognized request')
 
         return

@@ -15,19 +15,16 @@ def send(msg):
     """ Sends the message to the RPi server. """
 
     ip, port = '192.168.2.69', 9118
-    # ip, port = '127.0.0.1', 9118
 
     # Connect to the server
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect((ip, port))
 
-    # Send the data
+    # Send the data and get the response
     s.send(msg.encode())
+    response = s.recv(36)
 
-    # receive the response
-    response = s.recv(24)
-
-    return response
+    return response.decode()
 
 
 def test_connection():
