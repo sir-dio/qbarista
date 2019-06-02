@@ -22,13 +22,16 @@ To SSH into the Pi for the first time, the `ssh pi@raspberrypi.local` command ca
 After that I personally prefer to change the hostname of the device, so there is no
 conflicts with other Raspberry Pis. 
 
-To set static IP address for the `usb0` inteface, modify the `/etc/dhcpcd.conf`
+To set static IP address for the `usb0` interface, modify the `/etc/dhcpcd.conf`
 file to include the following:
 ```
 interface usb0
-	static ip_address=192.168.2.5
+	static ip_address=192.168.2.69
 	static ip6_address=fe80::8d97:da30:f5f5:fc2a
 	static gateway=192.168.2.1
 	static domain_name_servers=8.8.8.8
 	nohook wpa_supplicant
 ```
+The static gateway is the IP address that the main computer needs to use for RPi to
+connect to it successfully. It means that the interface might need to be manually setup
+to use this address.
