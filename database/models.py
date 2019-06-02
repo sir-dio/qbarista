@@ -64,10 +64,12 @@ class Question:
 
     def add_picture(self, picture):
         """ Adds a picture to the question. """
+
         self.picture = picture
 
     @property
     def answers(self):
+        """ Returns a shuffled list of answers. """
         answ = [answer for answer in self.correct + self.incorrect if answer]
         random.shuffle(answ)
         return answ
