@@ -40,15 +40,14 @@ class qBaristaRequestHandler(socketserver.BaseRequestHandler):
             # report current wifi connection
             current = self.server.wireless_connection.current()
             if current:
-                self.request.send(b'Currently connected to %s!' % current.encode)
+                self.request.send(b'Currently connected to %s!' % current.encode())
             else:
                 self.request.send(b'Currently not connected!')
 
         elif msg[:8] == 'Connect:':
             # connect to a Wifi Network
             _, ssid, password = msg.split()
-            w = Wireless()
-            if w.connect(ssid, password):
+            if self.server.wireless_connection.connect(ssid, password):
                 self.request.send(b'Connected to WiFi!')
             else:
                 self.request.send(b'Connection attempt failed.')
