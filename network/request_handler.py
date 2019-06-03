@@ -10,7 +10,8 @@ e-mail: dubrovin.io@icloud.com
 import socketserver
 import subprocess
 
-from wireless import Wireless
+
+# from wireless import Wireless
 
 
 class qBaristaRequestHandler(socketserver.BaseRequestHandler):
@@ -36,23 +37,23 @@ class qBaristaRequestHandler(socketserver.BaseRequestHandler):
             self.request.send(b'Rebooting...')
             subprocess.run(['sudo', 'shutdown', '-r', 'now'])
 
-        elif msg == 'Report connection!':
-            # report current wifi connection
-            self.server.wireless_connection = Wireless()
-            current = self.server.wireless_connection.current()
-            if current:
-                self.request.send(b'Currently connected to %s!' % current.encode())
-            else:
-                self.request.send(b'Currently not connected!')
-
-        elif msg[:8] == 'Connect:':
-            # connect to a Wifi Network
-            self.server.wireless_connection = Wireless()
-            _, ssid, password = msg.split()
-            if self.server.wireless_connection.connect(ssid, password):
-                self.request.send(b'Connected to WiFi!')
-            else:
-                self.request.send(b'Connection attempt failed.')
+        # elif msg == 'Report connection!':
+        #     # report current wifi connection
+        #     self.server.wireless_connection = Wireless()
+        #     current = self.server.wireless_connection.current()
+        #     if current:
+        #         self.request.send(b'Currently connected to %s!' % current.encode())
+        #     else:
+        #         self.request.send(b'Currently not connected!')
+        #
+        # elif msg[:8] == 'Connect:':
+        #     # connect to a Wifi Network
+        #     self.server.wireless_connection = Wireless()
+        #     _, ssid, password = msg.split()
+        #     if self.server.wireless_connection.connect(ssid, password):
+        #         self.request.send(b'Connected to WiFi!')
+        #     else:
+        #         self.request.send(b'Connection attempt failed.')
 
         else:
             self.request.send(b'Unrecognized request')
