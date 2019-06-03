@@ -20,5 +20,4 @@ class qBaristaServer(socketserver.TCPServer):
         self.address = ('0.0.0.0', 9118)
         super().__init__(self.address, handler_class)
 
-        # initialize the Wireless object to connect to WiFi
-        self.wireless_connection = Wireless()
+        self.wireless_connection = None
