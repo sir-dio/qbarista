@@ -1,4 +1,4 @@
-""" qBarista: tasty web-served seismic tests.
+""" qBarista: tasty web-served seismic quizzes.
 
 This file defines the request handler for the socket-server.
 
@@ -14,7 +14,7 @@ from wireless import Wireless
 
 
 class qBaristaRequestHandler(socketserver.BaseRequestHandler):
-    """ The Request Handler for the qBarista socket server."""
+    """ The Request Handler for the qBarista socket server. """
 
     def handle(self):
         """ Handle the request from the client. """
@@ -29,6 +29,12 @@ class qBaristaRequestHandler(socketserver.BaseRequestHandler):
             # halt the RPi
             self.request.send(b'Shutting down...')
             subprocess.run(['sudo', 'shutdown', '-h', 'now'])
+        elif msg == 'Report connection!':
+            current = self.server.wireless_connection.current()
+            if current:
+                self.request.send(b'Currently connected to %s!' % current.encode)
+            else:
+                self.request.send(b'Currently not connected!')
         elif msg[:8] == 'Connect:':
             # connect to a Wifi Network
             _, ssid, password = msg.split()

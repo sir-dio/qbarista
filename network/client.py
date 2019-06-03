@@ -1,4 +1,4 @@
-""" qBarista: tasty web-served seismic tests.
+""" qBarista: tasty web-served seismic quizzes.
 
 This file defines the socket-client that is used on the main computer to
 control the Raspberry Pi.
@@ -17,8 +17,7 @@ def send(msg):
     ip, port = '192.168.2.69', 9118
 
     # Connect to the server
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.connect((ip, port))
+    s = socket.create_connection((ip, port))
 
     # Send the data and get the response
     s.send(msg.encode())
@@ -27,15 +26,13 @@ def send(msg):
     return response.decode()
 
 
-def test_connection():
+def test_connection(timeout=2):
     """ Test if the Pi is connected. """
 
     ip, port = '192.168.2.69', 9118
 
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
     try:
-        s.connect((ip, port))
+        socket.create_connection((ip, port), timeout=timeout)
         return True
-    except ConnectionRefusedError:
+    except OSError:
         return False
