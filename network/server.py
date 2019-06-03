@@ -21,8 +21,3 @@ class qBaristaServer(socketserver.TCPServer):
         super().__init__(self.address, handler_class)
 
         self.wireless_connection = None
-
-    def init_wireless(self):
-        if not self.wireless_connection:
-            self.wireless_connection = Wireless()
-
