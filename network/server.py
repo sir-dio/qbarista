@@ -22,7 +22,3 @@ class qBaristaServer(socketserver.TCPServer):
 
         # initialize the Wireless object to connect to WiFi
         self.wireless_connection = Wireless()
-
-    def run(self, poll_interval=0.5):
-        socketserver.TCPServer.serve_forever(self, poll_interval)
-        return

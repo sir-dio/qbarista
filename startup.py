@@ -11,4 +11,5 @@ e-mail: dubrovin.io@icloud.com
 from network.server import qBaristaServer
 
 if __name__ == '__main__':
-    qBaristaServer.run()
+    server = qBaristaServer()
+    server.serve_forever()
