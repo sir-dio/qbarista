@@ -67,17 +67,27 @@ class Question:
 
         self.picture = picture
 
+    def check_answer(self, answer):
+        """ Checks the answer and returns the score. """
+
+        answer.sort()
+        correct = [a for a in self.correct if a]
+        correct.sort()
+
+        return 1 if answer == correct else 0
+
     @property
     def answers(self):
         """ Returns a shuffled list of answers. """
-        answ = [answer for answer in self.correct + self.incorrect if answer]
-        random.shuffle(answ)
-        return answ
+
+        answers = [answer for answer in self.correct + self.incorrect if answer]
+        random.shuffle(answers)
+        return answers
 
     def __str__(self):
-        repr = '[%s] %s\n\t* ' % (self.quiz_id, self.question)
-        repr += '\n\t* '.join(self.answers)
-        return repr
+        string = '[%s] %s\n\t* ' % (self.quiz_id, self.question)
+        string += '\n\t* '.join(self.answers)
+        return string
 
     def __repr__(self):
         return '[%s]: %s\n' % (self.quiz_id, self.question)
@@ -87,6 +97,8 @@ class Question:
         """ Creates a Question instance from a database entry. """
 
         out = Question()
+
+        out.ID = entry[0]
 
         out.question = entry[1]
         out.correct = [entry[i] for i in range(2, 6)]

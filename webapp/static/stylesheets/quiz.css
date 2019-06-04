@@ -1,0 +1,47 @@
+.question-container {
+    margin: 100px auto;
+    width: 50%;
+    background-color: burlywood;
+    text-align: left;
+    box-shadow: 4px 4px dimgrey;
+    padding: 10px;
+}
+
+.question-text {
+    text-align: left;
+    font-weight: bolder;
+    font-size: large;
+    margin: 9px 9px 20px 9px;
+}
+
+.answer {
+    margin: 9px 9px 9px 40px;
+}
+
+.question-submit {
+
+}
+
+.quiz-result {
+    text-align: center;
+    font-size: larger;
+    font-weight: bolder;
+}
+
+#name-input {
+    width: 50%;
+    margin: 10px 10px;
+    text-align: center;
+}
+
+input[type="submit"] {
+    width: 30%;
+    margin: 10px;
+}
+
+img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}

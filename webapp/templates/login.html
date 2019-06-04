@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block head %}
+    {{ super() }}
+    <link rel="icon" href="static/icons/pass-fail-64.png">
+    <link rel="stylesheet" href="static/stylesheets/quiz.css">
+{% endblock %}
+
+{% block content %}
+    <div class="question-container">
+        <div class="question-text">Представься, пожалуйста!</div>
+        <form method="post">
+            <input id="name-input" name="name" placeholder="Тиль Линдеманн" type="text" autofocus>
+            <input type="submit" value="Подтвердить">
+        </form>
+    </div>
+{% endblock %}
