@@ -45,6 +45,7 @@ def initialize():
                             id INTEGER PRIMARY KEY AUTOINCREMENT,
                             student TEXT NOT NULL,
                             score INTEGER NOT NULL,
+                            max_score INTEGER NOT NULL,
                             quiz TEXT NOT NULL
                             );""")
 
@@ -99,6 +100,47 @@ def add_question(question):
     with connection:
         cursor = connection.cursor()
         cursor.execute(query, values)
+
+
+def add_result(student, score, max_score, quiz):
+    """ Adds a result to the table."""
+
+    connection = sqlite3.connect('database/alex.db')
+
+    query = """INSERT INTO results (student, score, max_score, quiz)
+               VALUES (:student, :score, :max_score, :quiz);"""
+
+    values = {
+        'student': student,
+        'score': score,
+        'max_score': max_score,
+        'quiz': quiz
+    }
+
+    with connection:
+        cursor = connection.cursor()
+        cursor.execute(query, values)
+
+
+def check_if_result_already_logged(student, quiz):
+    """ Checks whether the result is already logged iin the database. """
+
+    connection = sqlite3.connect('database/alex.db')
+
+    query = 'SELECT * FROM results WHERE student=:student AND quiz=:quiz;'
+
+    values = {
+        'student': student,
+        'quiz': quiz
+    }
+
+    with connection:
+        c = connection.cursor()
+        c.execute(query, values)
+
+        results = c.fetchall()
+
+    return True if results else False
 
 
 def get_questions_by_quiz_id(quiz_id):

@@ -73,8 +73,6 @@ class Question:
         correct = [a for a in self.correct if a]
         correct.sort()
 
-        print(answer, correct)
-
         return 1 if answer == correct else 0
 
     @property

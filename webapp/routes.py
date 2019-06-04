@@ -85,6 +85,14 @@ def results():
     if session['current_question'] < len(session['question_ids']):
         return redirect(url_for('quiz'))
 
+    if not db.check_if_result_already_logged(session['student'], app.CURRENT_QUIZ):
+        db.add_result(
+            student=session['student'],
+            score=session['score'],
+            max_score=len(session['question_ids']),
+            quiz=app.CURRENT_QUIZ
+        )
+
     return render_template('result.html',
                            score=session['score'],
                            total=len(session['question_ids']))
