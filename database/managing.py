@@ -7,6 +7,8 @@ e-mail: dubrovin.io@icloud.com
 
 """
 
+import random
+
 from database.models import Question
 
 import sqlite3
@@ -111,3 +113,60 @@ def get_questions_by_quiz_id(quiz_id):
         questions = q.fetchall()
 
     return [Question.create_from_db_entry(q) for q in questions]
+
+
+def get_questions_by_quiz_id_as_dict(quiz_id):
+    """ Returns questions for a given test id as a dictionary. """
+
+    questions = get_questions_by_quiz_id(quiz_id)
+    random.shuffle(questions)
+
+    out = dict()
+
+    for i, q in enumerate(questions):
+        out['#%i' % i] = {
+            'question': q.question,
+            'answers': q.answers,
+            'picture': q.picture}
+
+    return out
+
+
+def get_quiz_ids_by_quiz_name(quiz_name):
+    """ Returns a list of existing quiz_ids for a given quiz name. """
+
+    connection = sqlite3.connect('database/alex.db')
+
+    with connection:
+        cursor = connection.cursor()
+
+        q = cursor.execute("SELECT DISTINCT quiz_id FROM questions")
+        ids = q.fetchall()
+
+    return [i[0] for i in ids if quiz_name in i[0]]
+
+
+def get_question_by_id(question_id):
+    """ Returns a question with the given ID. """
+
+    connection = sqlite3.connect('database/alex.db')
+
+    with connection:
+        cursor = connection.cursor()
+
+        q = cursor.execute("SELECT * FROM questions  WHERE id=?", [question_id])
+
+    return Question.create_from_db_entry(q.fetchone())
+
+
+def get_question_ids_by_quiz_id(quiz_id):
+    """ Returns a list of question IDs for a given quiz ID. """
+
+    connection = sqlite3.connect('database/alex.db')
+
+    with connection:
+        cursor = connection.cursor()
+
+        q = cursor.execute('SELECT id FROM questions WHERE quiz_id=?', [quiz_id])
+
+    return [i[0] for i in q.fetchall()]

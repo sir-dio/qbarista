@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block head %}
+    {{ super() }}
+    <link rel="icon" href="static/icons/pass-fail-64.png">
+    <link rel="stylesheet" href="static/stylesheets/quiz.css">
+{% endblock %}
+
+{% block content %}
+
+    <form method="post">
+        <div class="question-container">
+            <div class="question-text">
+                {{ question.question }}
+            </div>
+
+            {% if question.picture %}
+                <img width="50%" height="50%" src="static/pictures/{{ question.picture }}">
+            {% endif %}
+
+            {% for answer in question.answers %}
+                <div class="answer">
+                    <input type="checkbox" name="{{ answer }}"> {{ answer }}
+                </div>
+            {% endfor %}
+
+            <input class="question-submit" type="submit" value="Подтвердить ответ">
+        </div>
+    </form>
+
+{% endblock %}

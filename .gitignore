@@ -4,4 +4,4 @@ qbarista-env
 *cache*
 alex.db
 notebooks/
-database/pictures/
+webapp/static/pictures/*
