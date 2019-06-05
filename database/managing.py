@@ -50,30 +50,6 @@ def initialize():
                             );""")
 
 
-def drop_all(force=False):
-    """ Drops all the tables in the database.
-
-    Parameters
-    ----------
-    force : bool
-        A flag that disables verbal conformation.
-
-    """
-
-    if not force:
-        if input('All tables will be dropped! Proceed? (y/[n])') != 'y':
-            print('Aborting.')
-            return
-
-    connection = sqlite3.connect('database/alex.db')
-
-    with connection:
-        cursor = connection.cursor()
-
-        cursor.execute('DROP TABLE IF EXISTS questions;')
-        cursor.execute('DROP TABLE IF EXISTS results;')
-
-
 def add_question(question):
     """ Adds a question to the database. """
 
@@ -155,23 +131,6 @@ def get_questions_by_quiz_id(quiz_id):
         questions = q.fetchall()
 
     return [Question.create_from_db_entry(q) for q in questions]
-
-
-def get_questions_by_quiz_id_as_dict(quiz_id):
-    """ Returns questions for a given test id as a dictionary. """
-
-    questions = get_questions_by_quiz_id(quiz_id)
-    random.shuffle(questions)
-
-    out = dict()
-
-    for i, q in enumerate(questions):
-        out['#%i' % i] = {
-            'question': q.question,
-            'answers': q.answers,
-            'picture': q.picture}
-
-    return out
 
 
 def get_quiz_ids_by_quiz_name(quiz_name):
