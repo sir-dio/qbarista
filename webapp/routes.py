@@ -12,7 +12,6 @@ from flask import render_template, redirect, request, session, url_for
 import database.managing as db
 
 import random
-from pprint import pprint
 
 
 @app.route('/')
@@ -29,7 +28,7 @@ def login():
             session['student'] = request.form['name']
 
     if 'student' not in session:
-        return render_template('login.html')
+        return render_template('login.html', title=app.CURRENT_QUIZ)
     else:
         return redirect(url_for('quiz'))
 
@@ -46,6 +45,8 @@ def quiz():
     if 'current_question' not in session:
         session['current_question'] = 0
         session['score'] = 0
+        session['correct_answer_shown'] = False
+        session['random_seed'] = random.randint(1, 1024)
 
         variants = db.get_quiz_ids_by_quiz_name(app.CURRENT_QUIZ)
         var = random.choice(variants)
@@ -54,14 +55,27 @@ def quiz():
 
     # handle a post request
     if request.method == 'POST':
-        # check question, update score
-
         # grab the question that was answered
         q = db.get_question_by_id(session['question_ids'][session['current_question']])
-        # send the list of chosen answers to .check_answer() method and update the score
-        session['score'] += q.check_answer(list(request.form.to_dict().keys()))
 
+        # send the list of chosen answers to .check_answer() method and update the score
+        chosen_answers = list(request.form.to_dict().keys())
+        score = q.check_answer(chosen_answers)
+        session['score'] += score
+
+        # update the current question index
         session['current_question'] += 1
+
+        # return the page with the correct answer
+        return render_template('quiz.html',
+                               title=app.CURRENT_QUIZ,
+                               question=q,
+                               random_seed=session['random_seed'],
+                               show_correct_answer=True,
+                               chosen_answers=chosen_answers,
+                               score=score,
+                               total_questions=len(session['question_ids']),
+                               current_question=session['current_question'] + 1)
 
     # check if all the questions have been answered already
     if session['current_question'] >= len(session['question_ids']):
@@ -72,7 +86,11 @@ def quiz():
 
     return render_template('quiz.html',
                            title=app.CURRENT_QUIZ,
-                           question=q)
+                           question=q,
+                           random_seed=session['random_seed'],
+                           show_correct_answer=False,
+                           total_questions=len(session['question_ids']),
+                           current_question=session['current_question'] + 1)
 
 
 @app.route('/results')
@@ -94,5 +112,6 @@ def results():
         )
 
     return render_template('result.html',
+                           title=app.CURRENT_QUIZ,
                            score=session['score'],
                            total=len(session['question_ids']))
