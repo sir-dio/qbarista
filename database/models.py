@@ -75,8 +75,10 @@ class Question:
 
         return 1 if answer == correct else 0
 
-    @property
-    def answers(self):
+    def answers(self, seed):
+        """ Returns a shuffled list of all the answers. """
+
+        random.seed(seed)
         answers = [answer for answer in self.correct + self.incorrect if answer]
         random.shuffle(answers)
         return answers

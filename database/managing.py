@@ -50,28 +50,28 @@ def initialize():
                             );""")
 
 
-def drop_all(force=False):
-    """ Drops all the tables in the database.
-
-    Parameters
-    ----------
-    force : bool
-        A flag that disables verbal conformation.
-
-    """
-
-    if not force:
-        if input('All tables will be dropped! Proceed? (y/[n])') != 'y':
-            print('Aborting.')
-            return
-
-    connection = sqlite3.connect('database/alex.db')
-
-    with connection:
-        cursor = connection.cursor()
-
-        cursor.execute('DROP TABLE IF EXISTS questions;')
-        cursor.execute('DROP TABLE IF EXISTS results;')
+# def drop_all(force=False):
+#     """ Drops all the tables in the database.
+#
+#     Parameters
+#     ----------
+#     force : bool
+#         A flag that disables verbal conformation.
+#
+#     """
+#
+#     if not force:
+#         if input('All tables will be dropped! Proceed? (y/[n])') != 'y':
+#             print('Aborting.')
+#             return
+#
+#     connection = sqlite3.connect('database/alex.db')
+#
+#     with connection:
+#         cursor = connection.cursor()
+#
+#         cursor.execute('DROP TABLE IF EXISTS questions;')
+#         cursor.execute('DROP TABLE IF EXISTS results;')
 
 
 def add_question(question):
