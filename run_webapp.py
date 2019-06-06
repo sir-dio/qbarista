@@ -1,10 +1,12 @@
 from webapp import app
 
 app.ALEX = {
-    'current_quiz': 'TOMO',
-    'logged_in_students': '',
-    'admin_register_url': '/keep_calm_and_quiz',
+    'current_quiz': 'MASW',
+    'logged_in_students': [],
+    'finished_students': [],
+    'completion_percents': {},
+    'scores': {},
     'admin_present': False,
 }
 
-app.run(debug=True)
+app.run(debug=True, host='0.0.0.0')

@@ -1,0 +1,20 @@
+<div class="question-text">
+    Студенты, выполняющие тест ({{ num_logged_in_students }}):
+</div>
+
+<ul>
+    {% for student in logged_in_students %}
+        {% if student in finished_students %}
+            <li>
+                <span style="color: darkgreen; font-weight: bold">{{ student }}: </span>
+                {#                <span style="font-size: x-small">(тест завершен на 100%)</span>#}
+                <span style="font-weight: bold">{{ scores[student] }}</span>
+            </li>
+        {% else %}
+            <li>
+                <span>{{ student }}</span>
+                <span style="font-size: x-small">(тест завершен на {{ completion_percents[student] }}%)</span>
+            </li>
+        {% endif %}
+    {% endfor %}
+</ul>

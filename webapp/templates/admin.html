@@ -2,14 +2,34 @@
 
 {% block head %}
     {{ super() }}
-    <link rel="icon" href="static/icons/ICON.png">
+    <link rel="icon" href="static/icons/crown-64.png">
     <link rel="stylesheet" href="static/stylesheets/quiz.css">
+    <script src="static/libraries/jquery-3.4.1.min.js"></script>
+
+    <script>
+
+        function update() {
+            const req = $.ajax({
+                url: "{{ url_for('update_admin_panel') }}",
+                type: "GET"
+            });
+
+            req.done(data => {
+                $("#admin-panel").html(data);
+            })
+        }
+
+        $(() => {
+            update();
+            setInterval(update, 2000);
+        });
+
+    </script>
+
 {% endblock %}
 
 {% block content %}
 
-    <div class="question-container">
-        Студенты, начавшие проходить тест:
-    </div>
+    <div id="admin-panel" class="question-container"></div>
 
 {% endblock %}

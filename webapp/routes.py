@@ -59,6 +59,8 @@ def quiz():
         session['question_ids'] = db.get_question_ids_by_quiz_id(var)
         random.shuffle(session['question_ids'])
 
+        app.ALEX['completion_percents'][session['student']] = 0
+
     # handle a post request
     if request.method == 'POST':
         # grab the question that was answered
@@ -71,6 +73,10 @@ def quiz():
 
         # update the current question index
         session['current_question'] += 1
+
+        # update the state of the app to track everyone
+        completion = round(session['current_question'] / len(session['question_ids']) * 100)
+        app.ALEX['completion_percents'][session['student']] = completion
 
         # return the page with the correct answer
         return render_template('quiz.html',
@@ -85,6 +91,9 @@ def quiz():
 
     # check if all the questions have been answered already
     if session['current_question'] >= len(session['question_ids']):
+        app.ALEX['finished_students'].append(session['student'])
+        app.ALEX['completion_percents'][session['student']] = 100
+        app.ALEX['scores'][session['student']] = '%s / %s' % (session['score'], len(session['question_ids']))
         return redirect('results')
 
     # grab the question to display next
@@ -109,12 +118,12 @@ def results():
     if session['current_question'] < len(session['question_ids']):
         return redirect(url_for('quiz'))
 
-    if not db.check_if_result_already_logged(session['student'], app.CURRENT_QUIZ):
+    if not db.check_if_result_already_logged(session['student'], app.ALEX['current_quiz']):
         db.add_result(
             student=session['student'],
             score=session['score'],
             max_score=len(session['question_ids']),
-            quiz=app.CURRENT_QUIZ
+            quiz=app.ALEX['current_quiz'],
         )
 
     return render_template('result.html',
@@ -129,8 +138,25 @@ def register_admin():
 
     if not app.ALEX['admin_present']:
         session['is_admin'] = True
+        app.ALEX['admin_present'] = True
 
     return redirect(url_for('admin'))
+
+
+@app.route('/update_admin_panel')
+def update_admin_panel():
+    """ Returns the HTML for an updated admin panel. """
+
+    if not session.get('is_admin'):
+        return redirect(url_for('login'))
+
+    return render_template('admin-panel.html',
+                           logged_in_students=app.ALEX['logged_in_students'],
+                           num_logged_in_students=len(app.ALEX['logged_in_students']),
+                           completion_percents=app.ALEX['completion_percents'],
+                           finished_students=app.ALEX['finished_students'],
+                           scores=app.ALEX['scores'],
+                           )
 
 
 @app.route('/admin')
