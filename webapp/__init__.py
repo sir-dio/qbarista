@@ -13,5 +13,8 @@ from flask import Flask
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
+app.ALEX = {
+    'admin_register_url': '/i_am_admin'
+}
 
 from webapp import routes
