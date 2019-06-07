@@ -11,7 +11,6 @@ e-mail: dubrovin.io@icloud.com
 import network
 
 import socketserver
-from wireless import Wireless
 
 
 class qBaristaServer(socketserver.TCPServer):
