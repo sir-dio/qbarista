@@ -1,7 +1,1 @@
 .idea
-qbarista-env
-env
-*cache*
-alex.db
-notebooks/
-webapp/static/pictures/*
