@@ -11,13 +11,11 @@ e-mail: dubrovin.io@icloud.com
 import socket
 
 
-def send(msg):
+def send(msg, host='alex-pi.local', port=9118):
     """ Sends the message to the RPi server. """
 
-    ip, port = '192.168.2.69', 9118
-
     # Connect to the server
-    s = socket.create_connection((ip, port))
+    s = socket.create_connection((host, port))
 
     # Send the data and get the response
     s.send(msg.encode())
@@ -26,13 +24,11 @@ def send(msg):
     return response.decode()
 
 
-def test_connection(timeout=2):
+def test_connection(host='alex-pi.local', port=9118, timeout=2):
     """ Test if the Pi is connected. """
 
-    ip, port = '192.168.2.69', 9118
-
     try:
-        socket.create_connection((ip, port), timeout=timeout)
+        socket.create_connection((host, port), timeout=timeout)
         return True
     except OSError:
         return False
